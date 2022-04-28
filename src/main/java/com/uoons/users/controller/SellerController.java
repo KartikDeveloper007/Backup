@@ -8,6 +8,8 @@ import com.uoons.users.enitity.UserEntity;
 import com.uoons.users.service.SellerService;
 import com.uoons.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +33,7 @@ public class SellerController {
     @PreAuthorize("hasAnyAuthority('SELLER','ADMIN')")
     public UserEntity findSellerByemail(@PathVariable("emailid") String email) {
         return sellerService.getSeller(email);
+
     }
 
     @PostMapping("/savebusinessdetails/{emailid}")
@@ -53,8 +56,9 @@ public class SellerController {
 
     @PutMapping("/updateseller/{email}")
     @PreAuthorize("hasAuthority('SELLER')")
-    public UserEntity updateSeller(@PathVariable("email") String email, @RequestBody UserEntity user) {
-        return sellerService.updateSeller(email, user);
+    public ResponseEntity<UserEntity> updateSeller(@PathVariable("email") String email, @RequestBody UserEntity user) {
+        UserEntity updateSeller = sellerService.updateSeller(email, user);
+        return new ResponseEntity<UserEntity>(updateSeller, HttpStatus.RESET_CONTENT);
     }
 
     @GetMapping("/getbusinessdetail/{email}")

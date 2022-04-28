@@ -2,7 +2,10 @@ package com.uoons.users.controller;
 
 import com.uoons.users.enitity.UserEntity;
 import com.uoons.users.service.UserService;
+import com.uoons.users.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,29 +17,35 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
     @PostMapping("/savecustomer")
-    public UserEntity saveCustomer(@RequestBody UserEntity customer) {
-        return userService.saveCustomer(customer);
+    public ResponseEntity<?> saveCustomer(@RequestBody UserEntity customer) {
+        UserEntity saveCustomer = userService.saveCustomer(customer);
+        return new ResponseEntity<UserEntity>(saveCustomer, HttpStatus.CREATED);
+
     }
 
     @GetMapping("/customer")
     @PreAuthorize("hasAuthority('CUSTOMER')")
     public String customerDashboard() {
         return "Customer dashboard";
-      }
+    }
 
-   /* @GetMapping("/email/{email}")
+
+    @GetMapping("/email/{email}")
     @PreAuthorize("hasAnyAuthority('ADMIN','SELLER')")
-    public UserEntity getByEmail(@PathVariable("email") String email) {
-        return userService.getByEmail(email);
-    }*/
-
+    public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
+        UserEntity findCustomerByEmail=userServiceImpl.getByEmail(email);
+        return new ResponseEntity<UserEntity>(findCustomerByEmail,HttpStatus.OK);
+    }
 
     @GetMapping("/getAllcustomer")
     @PreAuthorize("hasAnyAuthority('ADMIN','SELLER')")
     public List<UserEntity> getALlUser() {
-        return userService.getAllUser();
+        List<UserEntity> users = userService.getAllUser();
+        return users;
     }
 
 

@@ -1,6 +1,7 @@
 package com.uoons.users.serviceImpl;
 
 import com.uoons.users.enitity.*;
+import com.uoons.users.exception.EmptyInput;
 import com.uoons.users.repository.*;
 import com.uoons.users.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,21 +30,32 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public UserEntity saveSeller(UserEntity seller) {
-        seller.setUserId(UUID.randomUUID().toString());
-        seller.setPassword(passwordEncoder.encode(seller.getPassword()));
-        RoleEntity roleSeller = roleRepository.findByRoleName("SELLER");
-        seller.addRole(roleSeller);
-        return userRepository.save(seller);
+        if (seller.getFirstName().isEmpty() || seller.getLastName().isEmpty() ||
+                seller.getEmail().isEmpty() || seller.getPassword().isEmpty() || seller.getAddress().isEmpty() || seller.getMobileNo().isEmpty()) {
+            throw new EmptyInput("601", "Some Fields Empty");
+        } else {
+            seller.setUserId(UUID.randomUUID().toString());
+            seller.setPassword(passwordEncoder.encode(seller.getPassword()));
+            RoleEntity roleSeller = roleRepository.findByRoleName("SELLER");
+            seller.addRole(roleSeller);
+            return userRepository.save(seller);
+
+        }
     }
 
     @Override
     public UserEntity updateSeller(String email, UserEntity userEntity) {
-        UserEntity updateSeller = userRepository.findSellerByEmail(email);
-        updateSeller.setFirstName(userEntity.getFirstName());
-        updateSeller.setLastName(userEntity.getLastName());
-        updateSeller.setMobileNo(userEntity.getMobileNo());
-        updateSeller.setAddress(userEntity.getAddress());
-        return userRepository.save(updateSeller);
+        if (userEntity.getFirstName().isEmpty() || userEntity.getLastName().isEmpty() ||
+                userEntity.getEmail().isEmpty() || userEntity.getPassword().isEmpty() || userEntity.getAddress().isEmpty() || userEntity.getMobileNo().isEmpty()) {
+            throw new EmptyInput("609", "Some Fields are Empty!! Please Fill the required field");
+        } else {
+            UserEntity updateSeller = userRepository.findSellerByEmail(email);
+            updateSeller.setFirstName(userEntity.getFirstName());
+            updateSeller.setLastName(userEntity.getLastName());
+            updateSeller.setMobileNo(userEntity.getMobileNo());
+            updateSeller.setAddress(userEntity.getAddress());
+            return userRepository.save(updateSeller);
+        }
     }
 
 

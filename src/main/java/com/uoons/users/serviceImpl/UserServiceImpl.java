@@ -2,6 +2,8 @@ package com.uoons.users.serviceImpl;
 
 import com.uoons.users.enitity.RoleEntity;
 import com.uoons.users.enitity.UserEntity;
+import com.uoons.users.exception.EmptyInput;
+import com.uoons.users.exception.NotFound;
 import com.uoons.users.repository.RoleRepository;
 import com.uoons.users.repository.UserRepository;
 import com.uoons.users.service.UserService;
@@ -10,7 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -27,11 +31,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity saveCustomer(UserEntity customer) {
-        customer.setUserId(UUID.randomUUID().toString());
-        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-        RoleEntity roleCustomer = roleRepository.findByRoleName("CUSTOMER");
-        customer.addRole(roleCustomer);
-        return userRepository.save(customer);
+//      UserEntity dto  =userRepository.findByEmail(customer.getEmail());
+//       if(!ObjectUtils.isEmpty(dto)){
+//           throw new DuplicateRecordFound("601", "Duplicate Email");
+//       }
+        if (customer.getFirstName().isEmpty() || customer.getLastName().isEmpty() ||
+                customer.getEmail().isEmpty() || customer.getPassword().isEmpty() || customer.getAddress().isEmpty()) {
+            throw new EmptyInput("601", "Some Fields Empty");
+        } else {
+            customer.setUserId(UUID.randomUUID().toString());
+            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+            RoleEntity roleCustomer = roleRepository.findByRoleName("CUSTOMER");
+            customer.addRole(roleCustomer);
+            return userRepository.save(customer);
+        }
     }
 
 
@@ -42,7 +55,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity getByEmail(String email) {
-        return userRepository.findByEmail(email);
+        UserEntity user = userRepository.findByEmail(email);
+        if (user.getEmail().contains(email)) {
+            return user;
+        } else {
+            throw new NotFound("608", "email does not exist");
+        }
+
     }
 
 
@@ -56,14 +75,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity updateCustsomer(UserEntity userEntity, String email) {
 
-        UserEntity updateUser =userRepository.findCustomerByEmail(email);
+        UserEntity updateUser = userRepository.findCustomerByEmail(email);
+
+        if (userEntity.getFirstName().isEmpty() ||
+                userEntity.getLastName().isEmpty() || userEntity.getMobileNo().isEmpty() || userEntity.getAddress().isEmpty()) {
+            throw new EmptyInput("601", "Some Fields are Empty");
 
 
+        } else {
             updateUser.setFirstName(userEntity.getFirstName());
             updateUser.setLastName(userEntity.getLastName());
             updateUser.setMobileNo(userEntity.getMobileNo());
             updateUser.setAddress(userEntity.getAddress());
             return userRepository.save(updateUser);
+        }
     }
 
    /* @Override
