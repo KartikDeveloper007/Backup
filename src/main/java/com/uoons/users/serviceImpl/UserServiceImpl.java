@@ -5,6 +5,7 @@ import com.uoons.users.enitity.RoleEntity;
 import com.uoons.users.enitity.UserEntity;
 import com.uoons.users.exception.EmptyInput;
 import com.uoons.users.exception.NotFound;
+import com.uoons.users.exception.ServiceException;
 import com.uoons.users.repository.RoleRepository;
 import com.uoons.users.repository.UserRepository;
 import com.uoons.users.service.UserService;
@@ -57,7 +58,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserEntity> getAllUser() {
-        return userRepository.findAll();
+        try {
+            List<UserEntity> userEntities = userRepository.findAll();
+            if (userEntities.isEmpty()) {
+                throw new ServiceException("604", "List is empty");
+            }
+            return userEntities;
+        } catch (Exception e) {
+            throw new ServiceException("605", "Something went wrong while fetching employee" + e.getMessage());
+        }
     }
 
     @Override

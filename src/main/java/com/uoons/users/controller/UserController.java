@@ -37,15 +37,16 @@ public class UserController {
     @GetMapping("/email/{email}")
     @PreAuthorize("hasAnyAuthority('ADMIN','SELLER')")
     public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
-        UserEntity findCustomerByEmail=userServiceImpl.getByEmail(email);
-        return new ResponseEntity<UserEntity>(findCustomerByEmail,HttpStatus.OK);
+        UserEntity findCustomerByEmail = userServiceImpl.getByEmail(email);
+        return new ResponseEntity<UserEntity>(findCustomerByEmail, HttpStatus.OK);
     }
 
     @GetMapping("/getAllcustomer")
     @PreAuthorize("hasAnyAuthority('ADMIN','SELLER')")
-    public List<UserEntity> getALlUser() {
-        List<UserEntity> users = userService.getAllUser();
-        return users;
+    public ResponseEntity<List<UserEntity>> getALlUser() {
+        List<UserEntity> findAllCustomer = userServiceImpl.getAllUser();
+        return new ResponseEntity<List<UserEntity>>(findAllCustomer, HttpStatus.OK);
+
     }
 
 
