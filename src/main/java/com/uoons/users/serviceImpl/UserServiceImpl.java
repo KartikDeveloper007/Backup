@@ -87,13 +87,3 @@ public class UserServiceImpl implements UserService {
             return userRepository.save(updateUser);
         }
     }
-
-   /* @Override
-    public UserEntity saveCustomerAsSeller(UserEntity customer,Long userId) {
-        UserEntity addAsSeller = userRepository.findById(userId).get();
-
-
-        return null;
-    }*/
-
-}
