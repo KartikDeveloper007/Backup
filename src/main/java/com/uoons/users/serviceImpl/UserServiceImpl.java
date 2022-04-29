@@ -1,5 +1,6 @@
 package com.uoons.users.serviceImpl;
 
+import com.uoons.users.enitity.AddressEntity;
 import com.uoons.users.enitity.RoleEntity;
 import com.uoons.users.enitity.UserEntity;
 import com.uoons.users.exception.EmptyInput;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +43,14 @@ public class UserServiceImpl implements UserService {
         } else {
             customer.setUserId(UUID.randomUUID().toString());
             customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+            customer.setCreatedBy(customer.getFirstName()+" "+customer.getLastName());
+            customer.setCreatedDate(new Date());
+            List<AddressEntity> addressEntityList=customer.getAddress();
+            for(AddressEntity address:addressEntityList)
+            {
+                address.setCreatedBy(customer.getFirstName()+" "+customer.getLastName());
+                address.setCreatedDate(new Date());
+            }
             RoleEntity roleCustomer = roleRepository.findByRoleName("CUSTOMER");
             customer.addRole(roleCustomer);
             return userRepository.save(customer);
@@ -87,6 +97,14 @@ public class UserServiceImpl implements UserService {
             updateUser.setLastName(userEntity.getLastName());
             updateUser.setMobileNo(userEntity.getMobileNo());
             updateUser.setAddress(userEntity.getAddress());
+            updateUser.setUpdatedBy(userEntity.getFirstName()+" "+userEntity.getLastName());
+            updateUser.setUpdateDate(new Date());
+            List<AddressEntity> addressEntityList=updateUser.getAddress();
+            for (AddressEntity address: addressEntityList)
+            {
+                address.setUpdatedBy(userEntity.getFirstName()+" "+userEntity.getLastName());
+                address.setUpdateDate(new Date());
+            }
             return userRepository.save(updateUser);
         }
     }
