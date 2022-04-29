@@ -31,10 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity saveCustomer(UserEntity customer) {
-//      UserEntity dto  =userRepository.findByEmail(customer.getEmail());
-//       if(!ObjectUtils.isEmpty(dto)){
-//           throw new DuplicateRecordFound("601", "Duplicate Email");
-//       }
+
         if (customer.getFirstName().isEmpty() || customer.getLastName().isEmpty() ||
                 customer.getEmail().isEmpty() || customer.getPassword().isEmpty() || customer.getAddress().isEmpty()) {
             throw new EmptyInput("601", "Some Fields Empty");
