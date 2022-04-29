@@ -83,9 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void isActive(String email) {
-        UserEntity updateIsActive = userRepository.findByEmail(email);
-
-        userRepository.save(updateIsActive);
+        userRepository.findByUserEmail(email,true);
     }
 
     @Override

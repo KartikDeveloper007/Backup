@@ -55,6 +55,7 @@ public class UserController {
     public UserEntity updateCustomer(@PathVariable("emailId") String email, @RequestBody UserEntity userEntity) {
         return userService.updateCustsomer(userEntity, email);
     }
+
 }
 
 

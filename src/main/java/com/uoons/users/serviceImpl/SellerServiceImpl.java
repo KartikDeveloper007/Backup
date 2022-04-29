@@ -2,6 +2,7 @@ package com.uoons.users.serviceImpl;
 
 import com.uoons.users.enitity.*;
 import com.uoons.users.exception.EmptyInput;
+import com.uoons.users.exception.ServiceException;
 import com.uoons.users.repository.*;
 import com.uoons.users.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,7 @@ public class SellerServiceImpl implements SellerService {
     }
 
 
+
     @Override
     public UserEntity getSeller(String email) {
         return userRepository.findSellerByEmail(email);
@@ -146,6 +148,39 @@ public class SellerServiceImpl implements SellerService {
         updateBankDetail.setUpdateDate(new Date());
         return bankDetailsRepository.save(updateBankDetail);
     }
+
+    @Override
+    public List<UserEntity> getAllSeller() {
+        try {
+            List<UserEntity> userEntities = userRepository.findAllSeller();
+            if (userEntities.isEmpty()) {
+                throw new ServiceException("604", "List is empty");
+            }
+            return userEntities;
+        } catch (Exception e) {
+            throw new ServiceException("605", "Something went wrong while fetching employee" + e.getMessage());
+        }
+    }
+
+
+//    @Override
+//    public List<UserEntity> getAllUser() {
+//        try {
+//            List<UserEntity> userEntities = userRepository.findAll();
+//            if (userEntities.isEmpty()) {
+//                throw new ServiceException("604", "List is empty");
+//            }
+//            return userEntities;
+//        } catch (Exception e) {
+//            throw new ServiceException("605", "Something went wrong while fetching employee" + e.getMessage());
+//        }
+//    }
+//
+
+
+
+
+
 
 
     @Override

@@ -4,8 +4,10 @@ import com.uoons.users.dto.JwtResponse;
 import com.uoons.users.dto.LoginRequest;
 import com.uoons.users.enitity.UserEntity;
 import com.uoons.users.jwt.JwtUtils;
+import com.uoons.users.repository.UserRepository;
 import com.uoons.users.service.UserService;
 import com.uoons.users.serviceImpl.CustomUserDetails;
+import com.uoons.users.serviceImpl.UserServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,12 @@ public class AuthController {
     private UserService userService;
 
     @Autowired
+    private UserServiceImpl userServiceImpl;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private JwtUtils jwtUtils;
 
     ModelMapper modelMapper = new ModelMapper();
@@ -43,13 +51,15 @@ public class AuthController {
 
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity user = modelMapper.map(loginRequest, UserEntity.class);
-        userService.isActive(user.getEmail());
+         userService.isActive(user.getEmail());
+
 
         String generatetoken = jwtUtils.generateJwtToken(authentication);
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         List<String> roles = customUserDetails.getAuthorities().stream().map(item -> item.getAuthority()).collect(Collectors.toList());
-
+        userServiceImpl.isActive(user.getEmail());
         return ResponseEntity.ok().body(new JwtResponse(generatetoken, customUserDetails.getUsername(), roles, customUserDetails.getUser().getId()));
     }
+
 
 }

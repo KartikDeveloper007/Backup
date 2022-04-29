@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/seller")
 public class SellerController {
@@ -35,6 +37,10 @@ public class SellerController {
         return sellerService.getSeller(email);
 
     }
+
+
+
+    @GetMapping("")
 
     @PostMapping("/savebusinessdetails/{emailid}")
     @PreAuthorize("hasAuthority('SELLER')")
@@ -79,6 +85,16 @@ public class SellerController {
     public BankDetails getBankDetail(@PathVariable("email") String email) {
         return sellerService.getBankDetails(email);
     }
+
+    @GetMapping("/getallseller")
+    @PreAuthorize("hasAnyAuthority('SELLER','ADMIN')")
+    public ResponseEntity<List<UserEntity>> getAllSeller(){
+        List<UserEntity> sellerAll=sellerService.getAllSeller();
+        return new ResponseEntity<List<UserEntity>>(sellerAll,HttpStatus.OK);
+    }
+
+
+
 
     @PutMapping("/updatebankdetail/{email}")
     @PreAuthorize("hasAuthority('SELLER')")

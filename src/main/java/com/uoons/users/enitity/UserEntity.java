@@ -35,7 +35,7 @@ public class UserEntity extends BaseEntity{
     private String lastName;
     @Column(name = "mobile_no")
     private String mobileNo;
-
+    private Boolean isActive;
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name="role_id"))
@@ -45,6 +45,10 @@ public class UserEntity extends BaseEntity{
     @JoinColumn(name = "user_address_id")
     private List<AddressEntity> address;
 
+
+    public void setuserActive(Boolean status){
+        this.isActive=Boolean.TRUE;
+    }
 
     public void addRole(RoleEntity roles){
         this.role.add(roles);
