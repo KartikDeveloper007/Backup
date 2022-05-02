@@ -28,14 +28,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/customer")
-    @PreAuthorize("hasAuthority('CUSTOMER')")
-    public String customerDashboard() {
-        return "Customer dashboard";
-    }
-
-
-    @GetMapping("/email/{email}")
+    @GetMapping("/getcustomerbyemail/{email}")
     @PreAuthorize("hasAnyAuthority('ADMIN','SELLER')")
     public ResponseEntity<?> findByEmail(@PathVariable("email") String email) {
         UserEntity findCustomerByEmail = userServiceImpl.getByEmail(email);
@@ -49,14 +42,6 @@ public class UserController {
         return new ResponseEntity<List<UserEntity>>(findAllCustomer, HttpStatus.OK);
     }
 
-//    @GetMapping("/getallcustomer")
-//    @PreAuthorize("hasAnyAuthority('ADMIN','SELLER')")
-//    public ResponseEntity<List<UserEntity>> getALlUser() {
-//        List<UserEntity> findAllCustomer = userServiceImpl.getAllUser();
-//        return new ResponseEntity<List<UserEntity>>(findAllCustomer, HttpStatus.OK);
-//    }
-
-
 
 
     @PutMapping("/updatecustomer/{emailId}")
@@ -64,6 +49,17 @@ public class UserController {
     public UserEntity updateCustomer(@PathVariable("emailId") String email, @RequestBody UserEntity userEntity) {
         return userService.updateCustsomer(userEntity, email);
     }
+
+
+
+    @GetMapping("/getallcustomer")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SELLER')")
+    public ResponseEntity<List<UserEntity>> getALlCustomer() {
+        List<UserEntity> findAllCustomer = userServiceImpl.getAllCustomer();
+        return new ResponseEntity<List<UserEntity>>(findAllCustomer, HttpStatus.OK);
+    }
+
+
 
 }
 
