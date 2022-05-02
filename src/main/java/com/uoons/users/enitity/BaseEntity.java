@@ -19,8 +19,8 @@ public abstract class BaseEntity {
     @JsonIgnore
     private String updatedBy;
 
-    @JsonIgnore
-    private Boolean isDeleted;
+//    @JsonIgnore
+//    private Boolean isDeleted;
 
 
 

@@ -25,11 +25,8 @@ public class RoleRepositoryTest {
         RoleEntity customer=new RoleEntity("CUSTOMER");
         RoleEntity admin=new RoleEntity("ADMIN");
         RoleEntity seller=new RoleEntity("SELLER");
-
         roleRepository.saveAll(List.of(customer,admin,seller));
-
         List<RoleEntity> roleList=roleRepository.findAll();
-
         assertThat(roleList.size()).isEqualTo(3);
     }
 }

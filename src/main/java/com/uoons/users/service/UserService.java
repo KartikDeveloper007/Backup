@@ -9,6 +9,8 @@ public interface UserService {
 
     public List<UserEntity> getAllUser();
 
+    public List<UserEntity> getAllCustomer();
+
     public UserEntity getByEmail(String email);
 
     public void isActive(String email);

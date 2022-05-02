@@ -23,6 +23,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "SELECT r.role_name, u.*, uu.*  FROM role_tbl r INNER JOIN user_tbl_role u ON r.role_id = u.role_id INNER JOIN user_tbl uu ON uu.id=u.user_id WHERE r.role_name ='SELLER'",nativeQuery = true )
     public List<UserEntity> findAllSeller();
 
+
+
+    @Query(value = "SELECT r.role_name, u.*, uu.*  FROM role_tbl r INNER JOIN user_tbl_role u ON r.role_id = u.role_id INNER JOIN user_tbl uu ON uu.id=u.user_id WHERE r.role_name ='CUSTOMER'",nativeQuery = true )
+    public List<UserEntity> findAllCustomer();
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE user_tbl SET is_active = :status WHERE email = :email", nativeQuery = true)
