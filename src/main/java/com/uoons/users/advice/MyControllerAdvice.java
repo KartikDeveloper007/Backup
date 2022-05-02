@@ -2,6 +2,7 @@ package com.uoons.users.advice;
 
 import com.uoons.users.exception.EmptyInput;
 import com.uoons.users.exception.NotFound;
+import com.uoons.users.exception.ServiceException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,11 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<String>("fields are empty!!", HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<String> handleListEmptyException(ServiceException e) {
+        return new ResponseEntity<String>("List is mpty!", HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(NotFound.class)
     public ResponseEntity<String> handleNotFound(NotFound notFound) {
         return new ResponseEntity<String>("not found", HttpStatus.NOT_FOUND);
@@ -28,8 +34,6 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<String> handleNotFound(DataIntegrityViolationException e) {
         return new ResponseEntity<String>("Duplicate Entry! Please try another email", HttpStatus.BAD_REQUEST);
     }*/
-
-
 
 
     @ExceptionHandler(EntityNotFoundException.class)

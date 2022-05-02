@@ -27,6 +27,7 @@ public class UserController {
 
     }
 
+
     @GetMapping("/customer")
     @PreAuthorize("hasAuthority('CUSTOMER')")
     public String customerDashboard() {
@@ -41,13 +42,21 @@ public class UserController {
         return new ResponseEntity<UserEntity>(findCustomerByEmail, HttpStatus.OK);
     }
 
-    @GetMapping("/getAllcustomer")
-    @PreAuthorize("hasAnyAuthority('ADMIN','SELLER')")
+    @GetMapping("/getalluser")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<List<UserEntity>> getALlUser() {
         List<UserEntity> findAllCustomer = userServiceImpl.getAllUser();
         return new ResponseEntity<List<UserEntity>>(findAllCustomer, HttpStatus.OK);
-
     }
+
+//    @GetMapping("/getallcustomer")
+//    @PreAuthorize("hasAnyAuthority('ADMIN','SELLER')")
+//    public ResponseEntity<List<UserEntity>> getALlUser() {
+//        List<UserEntity> findAllCustomer = userServiceImpl.getAllUser();
+//        return new ResponseEntity<List<UserEntity>>(findAllCustomer, HttpStatus.OK);
+//    }
+
+
 
 
     @PutMapping("/updatecustomer/{emailId}")
