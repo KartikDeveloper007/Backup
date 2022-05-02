@@ -2,6 +2,7 @@ package com.uoons.users.enitity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.MappedSuperclass;
 import java.util.Date;
@@ -19,10 +20,12 @@ public abstract class BaseEntity {
     @JsonIgnore
     private String updatedBy;
 
-//    @JsonIgnore
-//    private Boolean isDeleted;
+    @JsonIgnore
+    private Boolean isDeleted;
 
-
+    @JsonIgnore
+    @ColumnDefault("false")
+    private Boolean isActive;
 
 
 }

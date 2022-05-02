@@ -16,6 +16,8 @@ public interface UserService {
     public void isActive(String email);
 
     public UserEntity updateCustsomer(UserEntity userEntity, String email);
+
+    public void isDeleted(String email);
 //    public UserEntity  saveCustomerAsSeller(UserEntity customer,Long userId);
 
 }

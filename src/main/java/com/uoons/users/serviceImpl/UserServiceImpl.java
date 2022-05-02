@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     List<RoleEntity> roles = new ArrayList<>();
+
     @Override
     public UserEntity saveCustomer(UserEntity customer) {
 
@@ -39,14 +40,16 @@ public class UserServiceImpl implements UserService {
         } else {
             customer.setUserId(UUID.randomUUID().toString());
             customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-            customer.setCreatedBy(customer.getFirstName()+" "+customer.getLastName());
+            customer.setCreatedBy(customer.getFirstName() + " " + customer.getLastName());
             customer.setCreatedDate(new Date());
             //customer.setIsDeleted(false);
+
             //customer.setIsActive(false);
-            List<AddressEntity> addressEntityList=customer.getAddress();
-            for(AddressEntity address:addressEntityList)
-            {
-                address.setCreatedBy(customer.getFirstName()+" "+customer.getLastName());
+
+            // customer.setIsActive(Boolean.FALSE);
+            List<AddressEntity> addressEntityList = customer.getAddress();
+            for (AddressEntity address : addressEntityList) {
+                address.setCreatedBy(customer.getFirstName() + " " + customer.getLastName());
                 address.setCreatedDate(new Date());
             }
             RoleEntity roleCustomer = roleRepository.findByRoleName("CUSTOMER");
@@ -99,29 +102,38 @@ public class UserServiceImpl implements UserService {
         userRepository.findByUserEmail(email, true);
     }
 
+
     @Override
     public UserEntity updateCustsomer(UserEntity userEntity, String email) {
 
         UserEntity updateUser = userRepository.findCustomerByEmail(email);
 
-        if (userEntity.getFirstName().isEmpty() || userEntity.getLastName().isEmpty() || userEntity.getMobileNo().isEmpty() || userEntity.getAddress().isEmpty()) {
-            throw new EmptyInput("601", "Some Fields are Empty");
+        if (userEntity.getFirstName().isEmpty() ||
+                userEntity.getLastName().isEmpty() || userEntity.getMobileNo().isEmpty() || userEntity.getAddress().isEmpty()) {
 
+            throw new EmptyInput("601", "Some Fields are Empty");
 
         } else {
             updateUser.setFirstName(userEntity.getFirstName());
             updateUser.setLastName(userEntity.getLastName());
             updateUser.setMobileNo(userEntity.getMobileNo());
             updateUser.setAddress(userEntity.getAddress());
+
             updateUser.setUpdatedBy(userEntity.getFirstName() + " " + userEntity.getLastName());
             updateUser.setUpdateDate(new Date());
             List<AddressEntity> addressEntityList = updateUser.getAddress();
             for (AddressEntity address : addressEntityList) {
                 address.setUpdatedBy(userEntity.getFirstName() + " " + userEntity.getLastName());
+
                 address.setUpdateDate(new Date());
             }
             return userRepository.save(updateUser);
         }
+    }
+
+    @Override
+    public void isDeleted(String email) {
+        userRepository.deactiveUserByEmail(email, true);
     }
 
 

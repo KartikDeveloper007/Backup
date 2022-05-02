@@ -52,6 +52,7 @@ public class UserController {
 
 
 
+
     @GetMapping("/getallcustomer")
     @PreAuthorize("hasAnyAuthority('ADMIN','SELLER')")
     public ResponseEntity<List<UserEntity>> getALlCustomer() {
@@ -59,6 +60,15 @@ public class UserController {
         return new ResponseEntity<List<UserEntity>>(findAllCustomer, HttpStatus.OK);
     }
 
+
+
+    @PutMapping("/deactive/{emailid}")
+    @PreAuthorize("hasAuthority('SELLER')")
+
+    public void deactiveUser(@PathVariable("emailid") String email)
+    {
+        userService.isDeleted(email);
+    }
 
 
 }

@@ -30,10 +30,10 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<String>("not found", HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
+    /*@ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleNotFound(DataIntegrityViolationException e) {
         return new ResponseEntity<String>("Duplicate Entry! Please try another email", HttpStatus.BAD_REQUEST);
-    }
+    }*/
 
 
     @ExceptionHandler(EntityNotFoundException.class)
