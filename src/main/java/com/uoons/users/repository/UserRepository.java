@@ -27,4 +27,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Transactional
     @Query(value = "UPDATE user_tbl SET is_active = :status WHERE email = :email", nativeQuery = true)
     public void findByUserEmail(@Param("email") String email, @Param("status") Boolean status);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE user_tbl SET is_deleted = :status WHERE email = :email", nativeQuery = true)
+    public void deactiveUserByEmail(@Param("email") String email, @Param("status") Boolean status);
 }

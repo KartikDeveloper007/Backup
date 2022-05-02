@@ -43,6 +43,8 @@ public class UserServiceImpl implements UserService {
             customer.setPassword(passwordEncoder.encode(customer.getPassword()));
             customer.setCreatedBy(customer.getFirstName()+" "+customer.getLastName());
             customer.setCreatedDate(new Date());
+            //customer.setIsDeleted(false);
+           // customer.setIsActive(Boolean.FALSE);
             List<AddressEntity> addressEntityList=customer.getAddress();
             for(AddressEntity address:addressEntityList)
             {
@@ -86,6 +88,8 @@ public class UserServiceImpl implements UserService {
         userRepository.findByUserEmail(email,true);
     }
 
+
+
     @Override
     public UserEntity updateCustsomer(UserEntity userEntity, String email) {
 
@@ -111,6 +115,11 @@ public class UserServiceImpl implements UserService {
             }
             return userRepository.save(updateUser);
         }
+    }
+
+    @Override
+    public void isDeleted(String email) {
+               userRepository.deactiveUserByEmail(email,true);
     }
 
 

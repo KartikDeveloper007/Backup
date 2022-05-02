@@ -56,6 +56,14 @@ public class UserController {
         return userService.updateCustsomer(userEntity, email);
     }
 
+    @PutMapping("/deactive/{emailid}")
+    @PreAuthorize("hasAuthority('SELLER')")
+
+    public void deactiveUser(@PathVariable("emailid") String email)
+    {
+        userService.isDeleted(email);
+    }
+
 }
 
 

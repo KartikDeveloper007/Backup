@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -35,7 +37,7 @@ public class UserEntity extends BaseEntity{
     private String lastName;
     @Column(name = "mobile_no")
     private String mobileNo;
-    private Boolean isActive;
+
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name="role_id"))
@@ -44,11 +46,6 @@ public class UserEntity extends BaseEntity{
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_address_id")
     private List<AddressEntity> address;
-
-
-    public void setuserActive(Boolean status){
-        this.isActive=Boolean.TRUE;
-    }
 
     public void addRole(RoleEntity roles){
         this.role.add(roles);
